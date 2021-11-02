@@ -36,7 +36,7 @@ CD "!LocalFolder!"
 IF NOT EXIST "!LocalTempFolder!" (
   MKDIR "!LocalTempFolder!"
 )
-PUSHD !LocalTempFolder!
+CD !LocalTempFolder!
 IF NOT EXIST "!LocalLinkFile!" (
 	ECHO.>"!LocalLinkFile!"
 )
@@ -94,6 +94,7 @@ TIMEOUT /T 2 >NUL
 GOTO :Main
 
 :CleanUp
+CD "!LocalFolder!"
 IF EXIST !LocalTempFolder! (
   DEL /F /Q /S "!LocalFolder!!LocalTempFolder!"
 )
@@ -105,5 +106,5 @@ IF EXIST "!LocalFileList!" (
 )
 DEL /F /Q "!LocalTempFolder!\" >NUL
 RMDIR "!LocalFolder!!LocalTempFolder!\" >NUL
-CD "!LocalFolder!"
+
 EXIT /B

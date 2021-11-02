@@ -94,6 +94,11 @@ TIMEOUT /T 2 >NUL
 GOTO :Main
 
 :CleanUp
+FOR /L %%A in (1,1,10) DO (
+  IF DEFINED Link%%A (
+	SET "Link%%A="
+	SET "Filename%%A="
+)
 CD "!LocalFolder!"
 IF EXIST !LocalTempFolder! (
   DEL /F /Q /S "!LocalFolder!!LocalTempFolder!"

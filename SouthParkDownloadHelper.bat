@@ -95,13 +95,14 @@ GOTO :Main
 
 :CleanUp
 FOR /L %%A in (1,1,10) DO (
-  IF DEFINED Link%%A (
-	SET "Link%%A="
-	SET "Filename%%A="
+	IF DEFINED Link%%A (
+		SET "Link%%A="
+		SET "Filename%%A="
+	)
 )
 CD "!LocalFolder!"
 IF EXIST !LocalTempFolder! (
-  DEL /F /Q /S "!LocalFolder!!LocalTempFolder!"
+  	DEL /F /Q /S "!LocalFolder!!LocalTempFolder!"
 )
 IF EXIST "!LocalLinkFile!" (
 	DEL /F /Q "!LocalLinkFile!" >NUL

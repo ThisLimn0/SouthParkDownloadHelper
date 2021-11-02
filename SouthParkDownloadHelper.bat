@@ -19,9 +19,9 @@ IF EXIST !LocalTempFolder! (
 )
 REM // Initialisation of variables after start or new cycle.
 SET "QualitySetting=best"
-SET "SessionSeed=%RANDOM%"
+SET "SessionSeed=%RANDOM:~0,3%-%RANDOM:~0,3%-%RANDOM:~0,3%"
 SET "LocalFolder=%~dp0"
-SET "LocalTempFolder=SoPaDo!SessionSeed!"
+SET "LocalTempFolder=SoPaDoTmp!SessionSeed!"
 SET "LocalLinkFile=linklist.txt"
 SET "LocalFileList=mylist.txt"
 SET "ThisClip="
@@ -44,9 +44,9 @@ IF NOT EXIST "!LocalFileList!" (
 IF NOT DEFINED URL (
 	ECHO.Input your link please. Example URL: https://www.southpark.de/folgen/er4a32/south-park-wie-werde-ich-ein-kampfkoloss-staffel-1-ep-3
 ) ELSE (
-	ECHO.Input your link please. Example URL: !URL!
+	ECHO.Input your link please. Last URL: !URL!
 )
-ECHO.Input quit to cleanup and quit.
+ECHO.Input "quit" to cleanup and quit.
 SET "URL="
 SET /P "URL=URL> "
 IF NOT DEFINED URL (
@@ -60,7 +60,7 @@ TITLE SouthPark.de Episode Download Helper - Gathering info
 REM // Gather info from link.
 ECHO.Gathering info...
 !LocalFolder!yt-dlp.exe !URL! -f best -g --get-filename -o "SouthPark.S%%(season_number)s.E%%(episode_number)s.%%(playlist_index)s.%%(ext)s" >> !LocalLinkFile!
-FOR /F "usebackq delims=" %%A in ("!LocalLinkFile!") DO (
+FOR /F "usebackq delims=" %%A IN ("!LocalLinkFile!") DO (
   SET "TMPVAR=%%A"
   SET "TMPVAR2=!TMPVAR:~0,5!"
   IF "!TMPVAR2!"=="https" (
@@ -78,7 +78,7 @@ ECHO.!FILENAME!>>"!LocalFolder!!FILENAME!.txt"
 IF DEFINED ACnt (
   ECHO.!ACnt! fragments found.
 )
-FOR /L %%A in (1,1,10) DO (
+FOR /L %%A IN (1,1,20) DO (
   IF DEFINED Link%%A (
     TITLE SouthPark.de Episode Download Helper - Downloading fragment %%A of !ACnt!
     ECHO.Downloading fragment %%A/!ACnt!...
@@ -95,7 +95,7 @@ TIMEOUT /T 2 >NUL
 GOTO :Main
 
 :CleanUp
-FOR /L %%A in (1,1,10) DO (
+FOR /L %%A IN (1,1,20) DO (
 	IF DEFINED Link%%A (
 		SET "Link%%A="
 		SET "Filename%%A="

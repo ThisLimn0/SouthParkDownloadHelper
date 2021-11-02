@@ -9,3 +9,5 @@ Just put the link to the episode into the script.
 It should download into the same folder as the script while downloading fragments into a temporary sub-folder first.
 
 No input checks, use with caution. /!\
+
+![Screenshot of the download screen](https://i.imgur.com/l0GypiB.png "South Park Download Helper Download Screen")

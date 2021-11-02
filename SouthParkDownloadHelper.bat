@@ -28,9 +28,6 @@ SET "ThisClip="
 SET "PastClip="
 SET "ACnt=0"
 SET "BCnt=0"
-FOR /L %%A IN (1,1,8) DO (
-	SET "Part%%A="
-)
 REM // Folder checks.
 CD "!LocalFolder!"
 IF NOT EXIST "!LocalTempFolder!" (
@@ -44,7 +41,11 @@ IF NOT EXIST "!LocalFileList!" (
 	ECHO.>"!LocalFileList!"
 )
 
-ECHO.Input your link please. Example URL: https://www.southpark.de/folgen/er4a32/south-park-wie-werde-ich-ein-kampfkoloss-staffel-1-ep-3
+IF NOT DEFINED URL (
+	ECHO.Input your link please. Example URL: https://www.southpark.de/folgen/er4a32/south-park-wie-werde-ich-ein-kampfkoloss-staffel-1-ep-3
+) ELSE (
+	ECHO.Input your link please. Example URL: !URL!
+)
 ECHO.Input quit to cleanup and quit.
 SET "URL="
 SET /P "URL=URL> "
@@ -58,7 +59,7 @@ IF /I "!URL!" EQU "quit" (
 TITLE SouthPark.de Episode Download Helper - Gathering info
 REM // Gather info from link.
 ECHO.Gathering info...
-!LocalFolder!yt-dlp.exe !URL! -f best -g --get-filename -o "SouthPark-S%%(season_number)s-E%%(episode_number)s.%%(playlist_index)s.%%(ext)s" >> !LocalLinkFile!
+!LocalFolder!yt-dlp.exe !URL! -f best -g --get-filename -o "SouthPark.S%%(season_number)s.E%%(episode_number)s.%%(playlist_index)s.%%(ext)s" >> !LocalLinkFile!
 FOR /F "usebackq delims=" %%A in ("!LocalLinkFile!") DO (
   SET "TMPVAR=%%A"
   SET "TMPVAR2=!TMPVAR:~0,5!"
@@ -102,7 +103,7 @@ FOR /L %%A in (1,1,10) DO (
 )
 CD "!LocalFolder!"
 IF EXIST !LocalTempFolder! (
-  	DEL /F /Q /S "!LocalFolder!!LocalTempFolder!"
+  DEL /F /Q /S "!LocalFolder!!LocalTempFolder!"
 )
 IF EXIST "!LocalLinkFile!" (
 	DEL /F /Q "!LocalLinkFile!" >NUL
